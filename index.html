@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Atendimento</title>
+    <!-- Adicione os links para as bibliotecas do Bootstrap e Owl Carousel aqui -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <style>
+       * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+       }
+       /* Adiciona um background para a página*/
+      body{
+    background-image: url('./Imagens/Background2.jpg');
+    background-size: cover;      /* cobre a tela sem distorcer */
+    background-position: center; /* centraliza a imagem */
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* deixa o fundo fixo ao rolar a página */
+}
+    /* Muda todas as escritas para marrom escuro, muda as fontes e para negrito" */
+    body, h1, h2, h3, h4, h5, h6, p, button, .btn, .card, .ticket-number, .current-ticket {
+        color: #4b2e14 !important; /* marrom escuro */
+        font-family: 'Georgia', 'Times New Roman', serif !important;
+            font-weight: bold !important;
+
+    }
+
+    .card-header.bg-warning {
+        background-color: #D2B48C !important; /* marrom claro */
+    }
+
+    .card-header.bg-success,
+    .card-header.bg-info,
+    .card-header.bg-secondary {
+        background-color: #6F4E37 !important; /* marrom escuro */
+    }
+
+
+        /* Estilo para os números grandes */
+        .ticket-number {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .current-ticket {
+            font-size: 5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #000000;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .ticket-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .ticket-card {
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            text-align: center;
+            background-color: #000000;
+        }
+        
+        .btn-generate {
+            font-size: 1.5rem;
+            padding: 15px 30px;
+        }
+        
+        .btn-attend {
+            font-size: 1.5rem;
+            padding: 15px 30px;
+        }
+                /* Adiciona transparência nas caixas de texto */
+        .card {
+           background-color: rgba(245, 232, 199, 0.65) !important; /* bege claro com transparência */
+    border: 1px solid #D2B48C; /* marrom claro */
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+        }
+
+        /* Cartões das senhas */
+        .ticket-card {
+             background-color: rgba(232, 213, 181, 0.7); /* bege médio */
+    border: 1px solid #A67B5B;
+    backdrop-filter: blur(4px);
+
+        }
+
+        /* Botões com leve transparência */
+        .btn {
+             background-color: #A67B5B;  /* marrom médio */
+    border: none;
+    color: white;
+    opacity: 0.9;
+        }
+        .btn:hover {
+             background-color: #6F4E37;  /* marrom escuro */
+    opacity: 1;
+        }
+        header.bg-primary {
+    background-color: #6F4E37 !important; /* marrom escuro */
+}
+    /* Config. da aparência do cartão "Anuncie Aqui"*/
+        .anuncie-card {
+        width: 100%;
+        background-color: #d2b48c; /* Bege */
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        border: 2px solid #8b5a2b; /* Marrom escuro */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Config. da escrita "Anuncie Aqui"*/
+    .anuncie-conteudo h3 {
+        margin: 0;
+        color: #4b2e14; /* Marrom escuro */
+        font-size: 40px;
+        font-weight: bold;
+}
+    </style>
+</head>
+<body>
+    <!-- Título -->
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Pães e Frios </h1>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Painel de Entrada das Senhas -->
+            <div class="col-md-4">
+                <div class="card mt-3">
+                    <div class="card-header bg-info text-white">
+                        <h2>Painel de Entrada de Senhas</h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <button id="generateTicket" class="btn btn-success btn-generate mb-4">
+                            Gerar Nova Senha
+                        </button>
+                        <div class="ticket-list">
+                            <h4>Últimas senhas geradas:</h4>
+                            <div id="generatedTickets" class="mt-3">
+                                <!-- Senhas geradas serão adicionadas aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carrossel de Imagens -->
+<div class="col-md-4">
+    <div class="card mt-3">
+        <div class="card-header bg-secondary text-white">
+            <h2></h2>
+        </div>
+        <div class="card-body">
+            <div class="owl-carousel" id="imageCarousel">
+                <div class="item"><img src="Imagens/Presunto.png" class="img-fluid"></div>
+                <div class="item"><img src="Imagens/Mortadela.png" class="img-fluid"></div>
+                <div class="item"><img src="Imagens/Queijo.png" class="img-fluid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARD ANUNCIE AQUI -->
+    <div class="anuncie-card mt-3">
+        <div class="anuncie-conteudo">
+            <h3>Anuncie Aqui</h3>
+        </div>
+    </div>
+</div>
+
+
+            <!-- Painel de Atendimento das Senhas -->
+            <div class="col-md-4">
+                <div class="card mt-3">
+                    <div class="card-header bg-success text-white">
+                        <h2>Painel de Atendimento de Senhas</h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <button id="attendTicket" class="btn btn-warning btn-attend mb-4">
+                            Atender Próxima Senha
+                        </button>
+                        <div class="ticket-list">
+                            <h4>Últimas senhas atendidas:</h4>
+                            <div id="attendedTickets" class="mt-3">
+                                <!-- Senhas atendidas serão adicionadas aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel Atual (quem acabou de chegar e quem está sendo atendido) -->
+        <div class="row mt-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h2>Painel Atual</h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3>Última senha gerada:</h3>
+                                <div id="lastGenerated" class="ticket-number">---</div>
+                            </div>
+                            <div class="col-md-6">
+                                <h3>Senha em atendimento:</h3>
+                                <div id="currentTicket" class="current-ticket">---</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comando para adicionar arquivos de áudio -->
+    <audio id="clickSound" src="Sons\yametekudasai.mp3"></audio>
+    <audio id="clickSound1" src="Sons\heavenlymusic.mp3"></audio>
+
+
+    <!-- Scripts do Bootstrap, jQuery, Popper.js e Owl Carousel -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script>
+        // Variáveis globais
+        let ticketCounter = 1000;
+        let generatedTickets = [];
+        let attendedTickets = [];
+        const maxDisplayedTickets = 8;
+        
+       // Inicializa o carrossel de imagens
+        $('#imageCarousel').owlCarousel({
+            items: 1,
+            loop: true,
+            autoplay: true,
+            autoplayTimeout: 2500, // Tempo de exibição de cada imagem
+            autoplayHoverPause: false,
+            nav: false, // Esconde as setas
+            dots: false // Esconde os pontos
+        });
+        
+        // Gerar nova senha
+        $('#generateTicket').click(function() {
+            document.getElementById("clickSound").play();
+
+            const newTicket = ticketCounter++;
+            generatedTickets.unshift(newTicket); // Adiciona no início do array
+            
+            // Atualiza a última senha gerada no painel atual
+            $('#lastGenerated').text(newTicket);
+            
+            // Atualiza a lista de senhas geradas
+            updateGeneratedTicketsDisplay();
+        });
+        
+        // Atender próxima senha
+        $('#attendTicket').click(function() {
+             document.getElementById("clickSound1").play();
+
+            if (generatedTickets.length > 0) {
+                const nextTicket = generatedTickets.pop(); // Remove a última senha gerada
+                attendedTickets.unshift(nextTicket); // Adiciona no início do array de atendidos
+                
+                // Atualiza a senha em atendimento no painel atual
+                $('#currentTicket').text(nextTicket);
+                
+                // Atualiza as listas de senhas
+                updateGeneratedTicketsDisplay();
+                updateAttendedTicketsDisplay();
+                
+                // Se não houver mais senhas, atualiza o painel
+                if (generatedTickets.length === 0) {
+                    $('#lastGenerated').text('---');
+                }
+            } else {
+                alert('Não há senhas para atender!');
+            }
+        });
+        
+        // Atualiza a exibição das senhas geradas
+        function updateGeneratedTicketsDisplay() {
+            const displayElement = $('#generatedTickets');
+            displayElement.empty();
+            
+            // Mostra apenas as últimas 8 senhas
+            const ticketsToShow = generatedTickets.slice(0, maxDisplayedTickets);
+            
+            ticketsToShow.forEach(ticket => {
+                displayElement.append(`
+                    <div class="ticket-card">
+                        <div class="ticket-number">${ticket}</div>
+                    </div>
+                `);
+            });
+        }
+        
+        // Atualiza a exibição das senhas atendidas
+        function updateAttendedTicketsDisplay() {
+            const displayElement = $('#attendedTickets');
+            displayElement.empty();
+            
+            // Mostra apenas as últimas 8 senhas atendidas
+            const ticketsToShow = attendedTickets.slice(0, maxDisplayedTickets);
+            
+            ticketsToShow.forEach(ticket => {
+                displayElement.append(`
+                    <div class="ticket-card">
+                        <div class="ticket-number">${ticket}</div>
+                    </div>
+                `);
+            });
+        }
+    </script>
+</body>
+</html>
