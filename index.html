@@ -139,6 +139,8 @@
     <!-- Título -->
     <header class="bg-primary text-white text-center py-3">
         <h1>Pães e Frios </h1>
+        <h1>Relógio</h1>
+    <div id="hora"></div>
     </header>
 
     <div class="container-fluid">
@@ -243,6 +245,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
     <script>
+
+        function mostrarHora() {
+            const agora = new Date();
+            const horas = String(agora.getHours()).padStart(2, '0');
+            const minutos = String(agora.getMinutes()).padStart(2, '0');
+            const segundos = String(agora.getSeconds()).padStart(2, '0');
+            document.getElementById('hora').textContent = `${horas}:${minutos}:${segundos}`;
+            }
+
+            // Atualiza a cada segundo
+            setInterval(mostrarHora, 1000);
+
+            // Mostra imediatamente ao carregar
+            mostrarHora();
+
         // Variáveis globais
         let ticketCounter = 1000;
         let generatedTickets = [];
@@ -333,4 +350,5 @@
         }
     </script>
 </body>
+
 </html>
